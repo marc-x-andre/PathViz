@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from gui.graph_canvas import GraphCanvas
 from utils.logger import get_logger
 
 
@@ -17,7 +18,6 @@ class Manager:
     def _pack_components(self):
         self.logger.info("Packing Main Window")
         greeting = tk.Label(text="Hello, Tkinter")
-        greeting.pack()
         button = tk.Button(
             text="Click me!",
             width=25,
@@ -25,6 +25,6 @@ class Manager:
             bg="blue",
             fg="yellow",
         )
+        greeting.pack()
         button.pack()
-
-
+        GraphCanvas(self.main_window)
