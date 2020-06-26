@@ -8,7 +8,7 @@ from pydantic.main import BaseModel
 
 class Node(BaseModel):
     unique_id: UUID = None
-    name: Union[str, int]
+    name: Union[str, int] = ""
     point: Tuple[int, int] = (0, 0)
     nodes: List["Node"] = []
     tags: List[str] = []

@@ -1,6 +1,5 @@
 import tkinter as tk
 
-
 from gui.canvas import CanvasGraph
 from utils.logger import get_logger
 
@@ -8,7 +7,7 @@ from utils.logger import get_logger
 BTN_DEFAULT_STYLE = {"width": 20, "height": 2, "bg": "blue", "fg":"white"}
 
 
-class Manager:
+class Toolbar:
 
     def __init__(self):
         self.logger = get_logger(__name__)
