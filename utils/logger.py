@@ -1,3 +1,5 @@
+import inspect
+
 import structlog
 
 # structlog.configure(
@@ -16,8 +18,15 @@ import structlog
 
 _main_logger = structlog.get_logger()
 
+
 def get_logger(location: str):
     return _main_logger.bind(location=location)
 
+
+def debug(msg):
+    frame = inspect.stack()[1]
+    module = inspect.getmodule(frame[0])
+
+    get_logger(module.__name__).debug(msg, debug=True, lineno=frame.lineno)
 
 

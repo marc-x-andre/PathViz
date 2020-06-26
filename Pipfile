@@ -9,5 +9,6 @@ python_version = "3.7"
 [packages]
 structlog = "*"
 colorama = "*"
+pydantic = "*"
 
 [dev-packages]
