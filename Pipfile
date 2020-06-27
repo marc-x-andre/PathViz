@@ -10,5 +10,7 @@ python_version = "3.7"
 structlog = "*"
 colorama = "*"
 pydantic = "*"
+grandalf = "*"
+sqlalchemy = "*"
 
 [dev-packages]

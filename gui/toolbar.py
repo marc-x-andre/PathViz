@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from gui.canvas import CanvasGraph
+from commons.common import Common, Event
 from utils.logger import get_logger
 
 
@@ -11,21 +11,22 @@ class Toolbar:
 
     def __init__(self):
         self.logger = get_logger(__name__)
-        self.main_window = tk.Tk()
-        self.main_window.title("Graph Player")
-        self.canvas = None
-        self._pack_components()
-        self.canvas = CanvasGraph(self.main_window)
-        self.main_window.mainloop()
+        self.generate_graph_btn = tk.Button(text="Generate Graph", command=self.on_click_generate_graph, **BTN_DEFAULT_STYLE)
+        self.graph_seed_label = tk.Label(text=f"Seed: ")
 
-    def reset_canvas(self):
-        self.canvas.reset()
+        self._pack_component()
+        self._register_events()
 
-    def _pack_components(self):
-        self.logger.info("Packing Main Window")
-        greeting_label = tk.Label(text="Graph Visualization")
-        generate_graph_btn = tk.Button(text="Generate Graph", command=self.reset_canvas, **BTN_DEFAULT_STYLE)
-        graph_seed_label = tk.Label(text=f"")
-        greeting_label.pack()
-        generate_graph_btn.pack()
-        graph_seed_label.pack()
+    def on_click_generate_graph(self):
+        Common.gui_event.emit(Event.REGENERATE_GRAPH)
+
+    def update_seed(self, seed: int, **kwargs):
+        self.graph_seed_label.configure(text=f"Seed: {seed}")
+
+    def _register_events(self):
+        Common.gui_event.on(Event.NEW_GRAPH, self.update_seed)
+
+    def _pack_component(self):
+        self.logger.info("Packing Toolbar")
+        self.generate_graph_btn.pack()
+        self.graph_seed_label.pack()

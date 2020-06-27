@@ -6,6 +6,7 @@ from typing import List
 
 from graph.entities import Node, Graph
 from graph.generator import generate_graph
+from commons.common import Common, Event
 from utils.logger import get_logger
 
 
@@ -35,6 +36,7 @@ class CanvasGraph:
         self.canvas_nodes: List[CanvasNode] = None
         self.seed_value: int = None
         self.reset()
+        self._register_events()
 
     def reset(self):
         self.seed_value = random.randrange(sys.maxsize)
@@ -42,6 +44,7 @@ class CanvasGraph:
         self.graph: Graph = generate_graph(cartesian_size=(self.canvas_width, self.canvas_height), seed=self.seed_value)
         self.draw_links()
         self.canvas_nodes = [CanvasNode(n, self.canvas) for n in self.graph.nodes]
+        Common.gui_event.emit(Event.NEW_GRAPH, graph=self.graph, seed=self.seed_value)
 
     def draw_links(self):
         for node in self.graph.nodes:
@@ -55,7 +58,8 @@ class CanvasGraph:
                         text=line_length
                     )
 
-
+    def _register_events(self):
+        Common.gui_event.on(Event.REGENERATE_GRAPH, self.reset)
 
 
 

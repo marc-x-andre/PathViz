@@ -46,9 +46,9 @@ class Graph(BaseModel):
             if node.unique_id not in [n.unique_id for n in self.nodes]:
                 self.nodes.append(node)
 
-    def connect(self, nodes: (Node, Node)):
-        self.add([nodes[0], nodes[1]])
-        nodes[0].add([nodes[1]])
+    def connect(self, node_1: Node, node_2: Node):
+        self.add([node_1, node_2])
+        node_1.add([node_2])
 
     def debug_str(self) -> str:
         newline = '\n'
