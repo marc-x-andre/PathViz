@@ -1,17 +1,21 @@
 from enum import Enum
 
 from dbm.db_manager import DBManager
-from utils.event_emitter import EventEmitter
+from models.event_emitter import EventEmitter
 
 
 class Event(Enum):
-    REGENERATE_GRAPH = 1
-    NEW_GRAPH = 2
+    CLEAR = "clear"
+    NEW_GRAPH = ""
 
 
 class _Common:
+    """
+    Singleton service/object use in the whole application
+    """
 
     gui_event = EventEmitter()
+    algorithm_event = EventEmitter()
     db_manager = DBManager()
 
 
