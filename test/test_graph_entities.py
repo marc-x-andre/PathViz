@@ -1,6 +1,6 @@
 import unittest
 
-from graph.entities import Node, Graph
+from grid.entities import Node, Graph
 from utils.logger import get_logger
 
 

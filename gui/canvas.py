@@ -4,8 +4,8 @@ import sys
 from tkinter import Canvas, Tk, ALL
 from typing import List
 
-from graph.entities import Node, Graph
-from graph.generator import generate_graph
+from grid.entities import Node, Graph
+from grid.generator import generate_graph
 from commons.common import Common, Event
 from utils.logger import get_logger
 
@@ -24,7 +24,10 @@ class CanvasNode:
         )
 
 
-class CanvasGraph:
+class GridCanvas:
+
+    box_size = 10
+
     canvas_width = 800
     canvas_height = 800
 
