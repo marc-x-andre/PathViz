@@ -1,7 +1,7 @@
 from enum import Enum
 
 from dbm.db_manager import DBManager
-from utils.event_emitter import EventEmitter
+from models.event_emitter import EventEmitter
 
 
 class Event(Enum):
@@ -15,6 +15,7 @@ class _Common:
     """
 
     gui_event = EventEmitter()
+    algorithm_event = EventEmitter()
     db_manager = DBManager()
 
 
