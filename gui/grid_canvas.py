@@ -92,9 +92,7 @@ class GridCanvas:
 
     def _move_box_canvas(self, event: Point, box_canvas: BoxCanvas):
         future_position = self.get_box_canvas_at(event)
-        debug(event)
         if future_position is not box_canvas:
-            debug("event")
             tmp = box_canvas.box.type
             box_canvas.box.type = future_position.box.type
             future_position.box.type = tmp
