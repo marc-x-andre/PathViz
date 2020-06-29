@@ -1,17 +1,19 @@
 from tkinter import Canvas, Tk, ALL
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Type
 
+from algorithm.maze.maze import Maze
+from algorithm.pathfinding.pathfinding import Pathfinding
 from commons.common import Common, Event
 from models.box import Box, BoxStatus, BoxType, Point
 from models.grid import Grid
-from utils.logger import get_logger, debug
+from utils.logger import get_logger
 
-BOX_SIZE = 30
+BOX_SIZE = 20
 CANVAS_PADDING = 1
 
 BOX_STATUS_COLOR = {
-    BoxStatus.VISITED: "",
-    BoxStatus.UNVISITED: "",
+    BoxStatus.VISITED: "#d4e09b",
+    BoxStatus.UNVISITED: "#f2f4f3",
 }
 
 BOX_TYPE_COLOR = {
@@ -31,12 +33,13 @@ class BoxCanvas:
         self.draw()
 
     def draw(self):
+        fill = BOX_STATUS_COLOR[self.box.status] if self.box.type == BoxType.EMPTY else BOX_TYPE_COLOR[self.box.type]
         self.border_entity_id: int = self.canvas.create_rectangle(
             (self.box.position.x * BOX_SIZE) + CANVAS_PADDING,
             (self.box.position.y * BOX_SIZE) + CANVAS_PADDING,
             ((self.box.position.x * BOX_SIZE) + BOX_SIZE) + CANVAS_PADDING,
             ((self.box.position.y * BOX_SIZE) + BOX_SIZE) + CANVAS_PADDING,
-            fill=BOX_TYPE_COLOR[self.box.type]
+            fill=fill
         )
 
     def __str__(self):
@@ -46,8 +49,11 @@ class BoxCanvas:
 class GridCanvas:
 
     logger = get_logger(__name__)
-    canvas_width = 800
-    canvas_height = 800
+    canvas_width = 1000
+    canvas_height = 1000
+
+    is_resolve = False
+
     last_motion_box_updated: List[BoxCanvas] = []
     moving_special_box: Optional[BoxCanvas] = None
 
@@ -57,10 +63,55 @@ class GridCanvas:
         self.grid: Grid = None
         self.canvas_boxes: Dict[int, Dict[int, BoxCanvas]] = {}
         self._register_events()
+        self.pathfinding: Pathfinding = None
+        self.maze: Maze = None
+        self.reset()
+
+    ##
+    # Maze
+    ##
+
+    def set_maze(self, maze: Type[Maze]):
+        self.maze = maze(self.grid)
+        self.reset()
+
+    def make(self):
+        if self.pathfinding:
+            self.maze.make()
+            self.draw()
+
+    def next_step_maze(self):
+        if self.pathfinding:
+            self.maze.next_step()
+            self.draw()
+    ##
+    # Pathfinding
+    ##
+
+    def set_pathfinding(self, pathfinding: Type[Pathfinding]):
+        self.pathfinding = pathfinding(self.grid)
+        self.reset()
+        self.resolve_path()
+
+    def resolve_path(self):
+        if self.pathfinding:
+            self.pathfinding.resolve()
+            self.draw()
+
+    def next_step_path(self):
+        if self.pathfinding:
+            self.pathfinding.next_step()
+            self.draw()
+
+    ##
+    # Display
+    ##
 
     def reset(self, **kwargs):
         self.canvas.delete(ALL)
-        self._init_grid()
+        self.grid: Grid = Grid(width=int(self.canvas_width/BOX_SIZE), height=int(self.canvas_height/BOX_SIZE))
+        self.grid.init_grid()
+        self.draw()
 
     def draw(self):
         """Draw all box in the grid"""
@@ -76,6 +127,10 @@ class GridCanvas:
         if self.canvas_boxes.get(int(position.x/BOX_SIZE)):
             return self.canvas_boxes.get(int(position.x / BOX_SIZE)).get(int(position.y/BOX_SIZE))
         return None
+
+    ##
+    # User Input
+    ##
 
     def _motion_handler(self, event: Point):
         """Handle constant click"""
@@ -114,13 +169,14 @@ class GridCanvas:
         self.last_motion_box_updated = []
         self.moving_special_box = None
 
+    ##
+    # Event
+    ##
+
     def _register_events(self):
         Common.gui_event.on(Event.CLEAR, self.reset)
+        Common.algorithm_event.on(Event.RESOLVE_PATH, self.set_pathfinding)
         self.canvas.bind("<Button-1>", self._motion_handler)
         self.canvas.bind("<B1-Motion>", self._motion_handler)
         self.canvas.bind("<ButtonRelease-1>", self._motion_stop_handler)
 
-    def _init_grid(self):
-        self.grid: Grid = Grid(width=int(self.canvas_width/BOX_SIZE), height=int(self.canvas_height/BOX_SIZE))
-        self.grid.init_grid()
-        self.draw()

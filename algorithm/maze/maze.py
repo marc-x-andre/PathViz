@@ -1,6 +1,8 @@
+import random
 from abc import ABC, abstractmethod
 
 from models.grid import Grid
+from utils.seed import get_random_seed
 
 
 class Maze(ABC):
@@ -8,8 +10,15 @@ class Maze(ABC):
     Abstract representation of a maze maker class algorithm
     """
 
-    def __init__(self, grid: Grid):
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        return "Abstract Maze"
+
+    def __init__(self, grid: Grid, seed: int = None):
         self.grid = grid
+        self.seed = seed or get_random_seed()
+        random.seed(self.seed)
 
     @abstractmethod
     def next_step(self):
@@ -19,11 +28,6 @@ class Maze(ABC):
         pass
 
     @abstractmethod
-    def resolve(self):
-        """Resolve the models path"""
-        pass
-
-    @abstractmethod
-    def _confirm_compatibility(self):
-        """Check if the algorithm support every type of BoxType"""
+    def make(self):
+        """Create the maze in the grid"""
         pass

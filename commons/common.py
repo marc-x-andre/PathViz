@@ -6,6 +6,7 @@ from models.event_emitter import EventEmitter
 
 class Event(Enum):
     CLEAR = "clear"
+    RESOLVE_PATH = "resolve_path"
     NEW_GRAPH = ""
 
 

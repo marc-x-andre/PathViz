@@ -21,8 +21,6 @@ class Grid(BaseModel):
         return v or uuid.uuid4()
 
     def init_grid(self):
-        if self.boxes is not None:
-            return
         boxes: Dict[int, Dict[int, Box]] = {}
         # Create boxes
         for x in range(self.width):
