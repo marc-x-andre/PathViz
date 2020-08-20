@@ -1,11 +1,12 @@
 import React from 'react';
-import logo from '../logo.svg';
 import './Content.scss';
+import Grid from '../components/Grid';
 
 function Content() {
   return (
     <div className="content container-fluid">
-      <img src={logo} className="app-logo" alt="logo" />
+      {/* <img src={logo} className="app-logo" alt="logo" /> */}
+      <Grid></Grid>
     </div>
   );
 }
