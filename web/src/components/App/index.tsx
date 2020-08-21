@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.scss';
-import Drawer from './Drawer';
-import Content from './Content';
-import Infobox from './Infobox';
+import Drawer from '../Drawer';
+import Infobox from '../Infobox';
+import Grid from '../Grid';
 
 
 class App extends React.Component {
@@ -10,7 +10,7 @@ class App extends React.Component {
     return (
       <div className="drawer-layout">
         <Drawer></Drawer>
-        <Content></Content>
+        <Grid></Grid>
         <Infobox></Infobox>
       </div>
     );

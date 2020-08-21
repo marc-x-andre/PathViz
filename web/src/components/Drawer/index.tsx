@@ -1,9 +1,9 @@
 import React from 'react';
 import './Drawer.scss';
 import { connect } from 'react-redux';
-import { updateSpeed, DrawingSpeed } from '../redux/actions'
-import { StoreState } from '../redux/store'
-import Icon from '../components/Icon';
+import { updateSpeed, DrawingSpeed } from '../../redux/actions'
+import { StoreState } from '../../redux/store'
+import Icon from '../Icon';
 
 interface DrawerProps {
   updateSpeed: Function
