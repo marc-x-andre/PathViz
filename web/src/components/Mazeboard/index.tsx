@@ -2,22 +2,22 @@ import React from 'react';
 import { setGridSize } from '../../redux/actions'
 import { StoreState } from '../../redux/store';
 import { connect } from 'react-redux';
-import './Grid.scss'
+import './Mazeboard.scss'
 
 const BoxSizePx = 24;
 const BoxBorderPx = 1;
 
-interface GridState {
+interface MazeboardState {
   gridElement: Element;
   dimension: { rows: number, columns: number };
   htmlGrid: any[];
 }
 
-interface GridProps {
+interface MazeboardProps {
   setGridSize: typeof setGridSize
 }
 
-class Grid extends React.Component<GridProps, GridState> {
+class Mazeboard extends React.Component<MazeboardProps, MazeboardState> {
 
   caseStyle = {
     "width": `${BoxSizePx - (BoxBorderPx * 2)}px`,
@@ -25,7 +25,7 @@ class Grid extends React.Component<GridProps, GridState> {
     "borderWidth": `${BoxBorderPx}px`
   };
 
-  constructor(props: GridProps) {
+  constructor(props: MazeboardProps) {
     super(props);
     this.state = {
       gridElement: (null as any),
@@ -87,9 +87,9 @@ const mapStateToProps = (state: StoreState) => {
   return { state: state.drawingSpeed }
 }
 
-const mapDispatchToProps: GridProps = { setGridSize };
+const mapDispatchToProps: MazeboardProps = { setGridSize };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Grid);
+)(Mazeboard);

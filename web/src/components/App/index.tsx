@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import Drawer from '../Drawer';
 import Infobox from '../Infobox';
-import Grid from '../Grid';
+import Mazeboard from '../Mazeboard';
 
 
 class App extends React.Component {
@@ -10,7 +10,7 @@ class App extends React.Component {
     return (
       <div className="drawer-layout">
         <Drawer></Drawer>
-        <Grid></Grid>
+        <Mazeboard></Mazeboard>
         <Infobox></Infobox>
       </div>
     );
