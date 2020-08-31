@@ -1,16 +1,18 @@
 import React from 'react';
 import { setGridSize } from '../../redux/actions'
-import { StoreState } from '../../redux/store';
 import { connect } from 'react-redux';
 import './Mazeboard.scss'
+import { Grid } from '../../algorithm/types';
 
 const BoxSizePx = 24;
 const BoxBorderPx = 1;
 
 interface MazeboardState {
+  grid: Grid;
   gridElement: Element;
   dimension: { rows: number, columns: number };
   htmlGrid: any[];
+  toggling: boolean;
 }
 
 interface MazeboardProps {
@@ -28,18 +30,39 @@ class Mazeboard extends React.Component<MazeboardProps, MazeboardState> {
   constructor(props: MazeboardProps) {
     super(props);
     this.state = {
+      grid: new Grid(0, 0),
       gridElement: (null as any),
       dimension: { rows: 0, columns: 0 },
-      htmlGrid: []
+      htmlGrid: [],
+      toggling: false
     };
   }
 
   handleClick(e: Element) {
-    console.log(e);
+    console.log("handleClick");
     if (e.classList.contains("wall"))
       e.classList.remove("wall")
     else
       e.classList.add("wall");
+  }
+
+  handleContinuousClick(e: Element, state: "up" | "down") {
+    console.log("handleContinuousClick");
+    this.setState({ toggling: (state === "up") ? false : true });
+  }
+
+  handleMoveClick(e: Element) {
+    console.log("handleMoveClick");
+  }
+
+  handleMoveHover(e: Element) {
+    console.log("handleMoveHover");
+    if (this.state.toggling) {
+      if (e.classList.contains("wall"))
+        e.classList.remove("wall")
+      else
+        e.classList.add("wall");
+    }
   }
 
   componentDidMount() {
@@ -59,6 +82,9 @@ class Mazeboard extends React.Component<MazeboardProps, MazeboardState> {
             id={`${c}-${r}`} key={r}
             style={this.caseStyle}
             onClick={((e) => this.handleClick(e.target as any))}
+            onMouseDown={((e) => this.handleContinuousClick(e.target as any, 'down'))}
+            onMouseUp={((e) => this.handleContinuousClick(e.target as any, 'up'))}
+            onMouseEnter={((e) => this.handleMoveHover(e.target as any))}
           ></td>
         );
       }
@@ -83,8 +109,8 @@ class Mazeboard extends React.Component<MazeboardProps, MazeboardState> {
   }
 }
 
-const mapStateToProps = (state: StoreState) => {
-  return { state: state.drawingSpeed }
+const mapStateToProps = (state: any) => {
+  return { grid: state.grid }
 }
 
 const mapDispatchToProps: MazeboardProps = { setGridSize };

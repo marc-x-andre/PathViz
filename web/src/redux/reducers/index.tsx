@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
-import drawingSpeed from './drawingSpeed';
-import clear from './clear';
+import config from './config';
 import grid from './grid';
 
 export default combineReducers({
-    drawingSpeed,
-    clear,
+    config,
     grid
 })

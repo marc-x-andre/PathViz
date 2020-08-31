@@ -1,9 +1,7 @@
-export enum CaseStatus {
-    VISITED = "visited",
-    UNVISITED = "unvisited",
-}
 
-export enum CaseType {
+export enum CaseStatus {
+    UNVISITED = "unvisited",
+    VISITED = "visited",
     WALL = "wall",
     START = "start",
     END = "end",
@@ -11,7 +9,6 @@ export enum CaseType {
 
 export interface Case {
     status: CaseStatus;
-    type: CaseType;
 }
 
 export class Grid {
@@ -22,18 +19,19 @@ export class Grid {
     constructor(dimensionX: number, dimensionY: number) {
         this.dimensionX = dimensionX;
         this.dimensionY = dimensionY;
-        this.createCaseList();
-        this.cases[9][2]
+        this.initCaseList();
     }
 
-    updateCase(x: number, y: number, status?: CaseStatus, type?: CaseType) {
+    updateCase(x: number, y: number, status?: CaseStatus) {
 
     }
 
-    private createCaseList() {
+    private initCaseList() {
         for (let y = 0; y < this.dimensionY; y++) {
+            if (!this.cases[y])
+                this.cases[y] = []
             for (let x = 0; x < this.dimensionX; x++) {
-                // TODO
+                this.cases[y][x] = { status: CaseStatus.UNVISITED }
             }
         }
     }

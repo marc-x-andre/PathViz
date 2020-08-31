@@ -2,18 +2,11 @@ import React from 'react';
 import './Drawer.scss';
 import { connect } from 'react-redux';
 import { updateSpeed, DrawingSpeed } from '../../redux/actions'
-import { StoreState } from '../../redux/store'
 import Icon from '../Icon';
 
 interface DrawerProps {
   updateSpeed: Function
 }
-
-const mapStateToProps = (state: StoreState) => {
-  return { state: state.drawingSpeed }
-}
-
-const mapDispatchToProps: DrawerProps = { updateSpeed };
 
 class Drawer extends React.Component<DrawerProps> {
 
@@ -68,6 +61,12 @@ class Drawer extends React.Component<DrawerProps> {
     );
   }
 }
+
+const mapStateToProps = (state: any) => {
+  return { state }
+}
+
+const mapDispatchToProps: DrawerProps = { updateSpeed };
 
 export default connect(
   mapStateToProps,
